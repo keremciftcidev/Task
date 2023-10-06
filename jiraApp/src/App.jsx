@@ -18,10 +18,21 @@ function App() {
   };
   const deleteTaskById = (id)=>{
     const afterDeleteTask = tasks.filter((task)=>{
-      return task.id  !==id
+      return task.id !==id
     })
     setTasks(afterDeleteTask)
   }
+  const editTaskById = (id ,updatedTitle,updatedTaskDesc)=>{
+    const updatedTask = tasks.map((task)=>{
+      if(task.id === id){
+
+        return {id,title:updatedTitle,taskDesc:updatedTaskDesc}
+      }
+      return task
+    })
+    setTasks(updatedTask)
+  }
+  
 
  
 
@@ -30,7 +41,7 @@ function App() {
     <div className="App">
       <TaskCreate onCreate={createTask} />
       <h1>Görevlerim!</h1>
-      <TaskList tasks={tasks} onDelete={deleteTaskById} />
+      <TaskList tasks={tasks} onDelete={deleteTaskById} onUpdate={editTaskById} />
     </div>
   );
 }
