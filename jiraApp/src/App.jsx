@@ -1,47 +1,26 @@
-import { useState } from "react";
+import { useEffect, useContext } from "react";
 import "./App.css";
 import TaskCreate from "./components/TaskCreate";
 import TaskList from "./components/TaskList";
+import TasksContext from "./context/task";
 
 function App() {
-  const [tasks, setTasks] = useState([]);
+ 
+  const {fetchTasks} = useContext(TasksContext)
 
-  const createTask = (title, taskDesc) => {
-    const createdTasks=[
-      ...tasks,{
-        id:Math.round(Math.random()*999999),
-        title ,
-        taskDesc 
-      }
-    ]
-    setTasks(createdTasks)
-  };
-  const deleteTaskById = (id)=>{
-    const afterDeleteTask = tasks.filter((task)=>{
-      return task.id !==id
-    })
-    setTasks(afterDeleteTask)
-  }
-  const editTaskById = (id ,updatedTitle,updatedTaskDesc)=>{
-    const updatedTask = tasks.map((task)=>{
-      if(task.id === id){
-
-        return {id,title:updatedTitle,taskDesc:updatedTaskDesc}
-      }
-      return task
-    })
-    setTasks(updatedTask)
-  }
-  
+  useEffect(()=>{
+   fetchTasks()
+  },[])
+ 
 
  
 
   
   return (
     <div className="App">
-      <TaskCreate onCreate={createTask} />
+      <TaskCreate />
       <h1>Görevlerim!</h1>
-      <TaskList tasks={tasks} onDelete={deleteTaskById} onUpdate={editTaskById} />
+      <TaskList />
     </div>
   );
 }

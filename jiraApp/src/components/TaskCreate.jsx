@@ -1,8 +1,12 @@
 import { useState } from "react";
+import { useContext } from "react";
 
-function TaskCreate({ onCreate, task, taskFormUpdate ,onUpdate }) {
-  const [title, setTitle] = useState(task?task.title : '');
-  const [taskDesc, setTaskDesc] = useState(task ? task.taskDesc : '');
+import TasksContext from "../context/task";
+
+function TaskCreate({ task, taskFormUpdate,onUpdate }) {
+  const [title, setTitle] = useState(task ? task.title : "");
+  const [taskDesc, setTaskDesc] = useState(task ? task.taskDesc : "");
+  const { editTaskById, createTask } = useContext(TasksContext);
 
   const handleChange = (event) => {
     setTitle(event.target.value);
@@ -13,11 +17,12 @@ function TaskCreate({ onCreate, task, taskFormUpdate ,onUpdate }) {
   const handleSubmit = (event) => {
     // bu method yenilenmesini engeller sayfanın
     event.preventDefault();
-    if(taskFormUpdate){
-      onUpdate(task.id,title,taskDesc)
-    }else{
-
-      onCreate(title, taskDesc);
+    if (taskFormUpdate) {
+      onUpdate(task.id, title, taskDesc);
+      // editTaskById(task.id, title, taskDesc)
+    } else {
+      // onCreate(title, taskDesc);
+      createTask(title,taskDesc)
     }
     setTitle("");
     setTaskDesc("");
